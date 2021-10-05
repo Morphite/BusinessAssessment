@@ -1,7 +1,5 @@
 package com.diplome.businessassessment.controller;
 
-import com.diplome.businessassessment.model.Role;
-import com.diplome.businessassessment.model.User;
 import com.diplome.businessassessment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +18,6 @@ public class HomeController {
 
     @RequestMapping("/assessment")
     public String create() {
-
-        User newUser = new User();
-        newUser.setLogin("admin");
-        newUser.setPass("admin");
-        newUser.setName("admin");
-        newUser.setSurname("admin");
-        newUser.setRole(Role.ADMIN.toString());
-        userRepository.save(newUser);
-        return "assessment";
+        return "createOrUpdateObjectForm";
     }
 }
