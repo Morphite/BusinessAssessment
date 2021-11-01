@@ -16,6 +16,7 @@ public class System {
     private String id;
     private String name;
     private Map<String, Integer> systemMetrics;
+    private Map<String, Boolean> functionality;
 
     public System() {
         this.id = UUID.randomUUID().toString();
