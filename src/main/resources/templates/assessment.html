@@ -11,7 +11,7 @@
 
     <h3 id="question" class="my-4 text-center">How important is the ability to export-import from CSV, XLSX files?</h3>
 
-    <form th:action="@{/objects/create}" method="post" accept-charset="UTF-8" >
+    <form id="questionForm" th:action="@{/objects/create}" method="post" accept-charset="UTF-8" >
 
         <div class="wrapper mb-3">
             <div>
@@ -41,11 +41,11 @@
                 </div>
             </div>
         </div>
-        <div class="control-buttons text-center">
-            <button type="button" id="nextBtn" class="btn btn-success form-button">Next</button>
-            <button type="button" class="btn btn-outline-dark form-button" onclick="history.back()">Cancel</button>
-        </div>
     </form>
+    <div class="control-buttons text-center">
+        <button type="button" id="nextBtn" class="btn btn-success form-button">Next</button>
+        <button type="button" class="btn btn-outline-dark form-button" onclick="history.back()">Cancel</button>
+    </div>
 </div>
 
 
@@ -54,24 +54,47 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 
 <script th:inline="javascript">
     $(document).ready(function () {
 
+        let answersMap = new Map();
         let questions = [[${questions}]];
         let currentQ = questions.shift();
 
         $('#question').text(currentQ.question);
 
         $('#nextBtn').click(function () {
-            if (questions.length !== 0) {
-                let radioValue = $("input[type='radio']:checked").val();
-                console.log(radioValue);
 
-                currentQ = questions.shift();
-                $('#question').text(currentQ.question);
+            if ($('#nextBtn').text() === 'Submit') {
+                console.log(JSON.stringify(answersMap));
 
+                const convMap = {};
+                answersMap.forEach((val, key) => {
+                    convMap[key] = val;
+                });
 
+                $.ajax({
+                    type: 'POST',
+                    url: '/assessment-result',
+                    data: JSON.stringify(convMap),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                })
+            } else {
+                let selectedValue = $("input[type='radio']:checked").val();
+                answersMap.set(currentQ.id, selectedValue); // key: idOfAnswer, idOfQuestion
+
+                if (questions.length !== 0) {
+                    currentQ = questions.shift();
+                    $('#question').text(currentQ.question);
+                } else {
+                    $('#questionForm').remove();
+                    $('#question').text('Are you want to submit assessment form?');
+                    $('#nextBtn').text('Submit');
+                }
             }
         })
     })

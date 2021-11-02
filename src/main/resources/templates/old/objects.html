@@ -11,7 +11,7 @@
     <th:block th:each="object : ${objects}">
         <form action="/objects" method="post">
             <div class="card mx-1 my-2" style="width: 18rem;">
-                <img src="images/lake.jpg" class="card-img-top" alt="...">
+                <img src="../../static/images/lake.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
                         [[${object.name}]]
@@ -34,9 +34,9 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
 
 </body>
 </html>

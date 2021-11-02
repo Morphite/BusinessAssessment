@@ -10,12 +10,12 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Document(collection = "question")
-public class Question {
+public class QuestionModel {
 
     private String id;
     private String question;
 
-    public Question(String question) {
+    public QuestionModel(String question) {
         this.id = UUID.randomUUID().toString();
         this.question = question;
     }
