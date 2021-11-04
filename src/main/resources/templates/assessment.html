@@ -11,39 +11,22 @@
 
     <h3 id="question" class="my-4 text-center">How important is the ability to export-import from CSV, XLSX files?</h3>
 
-    <form id="questionForm" th:action="@{/objects/create}" method="post" accept-charset="UTF-8" >
+    <form id="questionForm" accept-charset="UTF-8" >
 
         <div class="wrapper mb-3">
-            <div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                    <label class="form-check-label" for="exampleRadios1">Yes, I definitely need it</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                    <label class="form-check-label" for="exampleRadios2">Yes, most likely I need it</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
-                    <label class="form-check-label" for="exampleRadios3">I might need it</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="option3">
-                    <label class="form-check-label" for="exampleRadios4">I probably won't need it</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios5" value="option3">
-                    <label class="form-check-label" for="exampleRadios5">Most likely I won't need it</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios6" value="option3">
-                    <label class="form-check-label" for="exampleRadios6">I definitely won't need it</label>
-                </div>
+            <div id="radioWrapper">
+
             </div>
         </div>
     </form>
+    <div class="justify-content-center d-flex">
+        <div id="warningBlock" class="alert alert-danger text-center" role="alert">
+            Please select answer!
+        </div>
+    </div>
     <div class="control-buttons text-center">
         <button type="button" id="nextBtn" class="btn btn-success form-button">Next</button>
+        <button type="button" id="submitBtn" class="btn btn-success form-button">Submit</button>
         <button type="button" class="btn btn-outline-dark form-button" onclick="history.back()">Cancel</button>
     </div>
 </div>
@@ -58,46 +41,78 @@
 
 
 <script th:inline="javascript">
+    let $radioWrapper = $('#radioWrapper');
+
     $(document).ready(function () {
+        $('#submitBtn').hide();
+        $('#warningBlock').hide();
 
         let answersMap = new Map();
         let questions = [[${questions}]];
-        let currentQ = questions.shift();
 
+        let currentQ = questions.shift();
         $('#question').text(currentQ.question);
+        displayAnswers(currentQ);
 
         $('#nextBtn').click(function () {
-
-            if ($('#nextBtn').text() === 'Submit') {
-                console.log(JSON.stringify(answersMap));
-
-                const convMap = {};
-                answersMap.forEach((val, key) => {
-                    convMap[key] = val;
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/assessment-result',
-                    data: JSON.stringify(convMap),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json"
-                })
-            } else {
-                let selectedValue = $("input[type='radio']:checked").val();
-                answersMap.set(currentQ.id, selectedValue); // key: idOfAnswer, idOfQuestion
+            let selectedValue = $("input[type='radio']:checked").val();
+            if (selectedValue) {
+                $('#warningBlock').hide();
+                answersMap.set(currentQ.id, selectedValue); // key: idOfQuestion, answerValue
 
                 if (questions.length !== 0) {
                     currentQ = questions.shift();
                     $('#question').text(currentQ.question);
+                    $radioWrapper.empty();
+                    displayAnswers(currentQ);
                 } else {
-                    $('#questionForm').remove();
+                    $('#questionForm').remove();+
                     $('#question').text('Are you want to submit assessment form?');
-                    $('#nextBtn').text('Submit');
+
+                    $('#nextBtn').hide();
+                    $('#submitBtn').show();
                 }
+            } else {
+                $('#warningBlock').show();
             }
+
+        })
+
+        $('#submitBtn').click(function () {
+            console.log(JSON.stringify(answersMap));
+
+            const convertedMap = {};
+            answersMap.forEach((val, key) => {
+                convertedMap[key] = val;
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/assessment-result',
+                data: JSON.stringify(convertedMap),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            })
         })
     })
+
+    function displayAnswers(currentQ) {
+        let answers = currentQ.answers;
+
+        answers.forEach(answer => {
+
+            let div = $('<div>').addClass("form-check");
+            div.append($('<input>').addClass("form-check-input").attr({
+                type: 'radio',
+                id: answer.id,
+                name: 'radioAnswers',
+                value: answer.value
+            }));
+
+            div.append($('<label>').addClass("form-check-label").attr('for', answer.id).text(answer.answer));
+            $radioWrapper.append(div);
+        });
+    }
 
 </script>
 
