@@ -63,9 +63,9 @@ public class AssessmentController {
     }
 
     @PostMapping("/assessment-result")
-    public String getAssessmentResult(@RequestBody Map<String, String> answerMap) {
-        assessmentService.makeAssessment(answerMap);
-        return "index";
+    public String getAssessmentResult(@RequestBody Map<String, String> answerMap, Model model) {
+        model.addAttribute("results", assessmentService.makeAssessment(answerMap));
+        return "assessment-result";
     }
 
 }

@@ -6,7 +6,7 @@
 
 <div th:replace="fragments/header :: header"></div>
 
-<div class="container">
+<div class="container" id="mainContainer">
     <h3 class="my-4 text-center">New assessment</h3>
 
     <h3 id="question" class="my-4 text-center">How important is the ability to export-import from CSV, XLSX files?</h3>
@@ -42,77 +42,96 @@
 
 <script th:inline="javascript">
     let $radioWrapper = $('#radioWrapper');
+    let $mainContainer = $('#mainContainer');
 
     $(document).ready(function () {
-        $('#submitBtn').hide();
-        $('#warningBlock').hide();
-
-        let answersMap = new Map();
-        let questions = [[${questions}]];
-
-        let currentQ = questions.shift();
-        $('#question').text(currentQ.question);
-        displayAnswers(currentQ);
-
-        $('#nextBtn').click(function () {
-            let selectedValue = $("input[type='radio']:checked").val();
-            if (selectedValue) {
-                $('#warningBlock').hide();
-                answersMap.set(currentQ.id, selectedValue); // key: idOfQuestion, answerValue
-
-                if (questions.length !== 0) {
-                    currentQ = questions.shift();
-                    $('#question').text(currentQ.question);
-                    $radioWrapper.empty();
-                    displayAnswers(currentQ);
-                } else {
-                    $('#questionForm').remove();+
-                    $('#question').text('Are you want to submit assessment form?');
-
-                    $('#nextBtn').hide();
-                    $('#submitBtn').show();
-                }
-            } else {
-                $('#warningBlock').show();
-            }
-
-        })
+        // $('#submitBtn').hide();
+        // $('#warningBlock').hide();
+        //
+        // let answersMap = new Map();
+        // let questions = [[${questions}]];
+        //
+        // let currentQ = questions.shift();
+        // $('#question').text(currentQ.question);
+        // displayAnswers(currentQ);
+        //
+        // $('#nextBtn').click(function () {
+        //     let selectedValue = $("input[type='radio']:checked").val();
+        //     if (selectedValue) {
+        //         $('#warningBlock').hide();
+        //         answersMap.set(currentQ.id, selectedValue); // key: idOfQuestion, answerValue
+        //
+        //         if (questions.length !== 0) {
+        //             currentQ = questions.shift();
+        //             $('#question').text(currentQ.question);
+        //             $radioWrapper.empty();
+        //             displayAnswers(currentQ);
+        //         } else {
+        //             $('#questionForm').remove();+
+        //             $('#question').text('Are you want to submit assessment form?');
+        //
+        //             $('#nextBtn').hide();
+        //             $('#submitBtn').show();
+        //         }
+        //     } else {
+        //         $('#warningBlock').show();
+        //     }
+        //
+        // })
 
         $('#submitBtn').click(function () {
-            console.log(JSON.stringify(answersMap));
+            // const convertedMap = {};
+            // answersMap.forEach((val, key) => {
+            //     convertedMap[key] = val;
+            // });
+            //
+            // console.log(convertedMap)
 
-            const convertedMap = {};
-            answersMap.forEach((val, key) => {
-                convertedMap[key] = val;
-            });
+            let obke = {
+                "market": "2",
+                "75393533-15b7-4afa-8e99-3ec5be04f4ef": "0.7",
+                "d44a9c9c-8098-4a30-8c0a-e8e694d71d27": "1.2",
+                "9eaac9f3-e8c6-4ac0-b276-8f8b007b1bcc": "0.7",
+                "01208bfb-ef21-4b4a-8424-68e229668f79": "1.2",
+                "98a76a9f-a1e2-404c-9db2-c545ea8c3ee1": "0.7",
+                "df10ba48-c3a1-4a44-b658-c7dd94616375": "0",
+                "cac1eb95-5ac2-4aed-a2f4-469d28260f02": "1",
+                "787aebfd-f39d-4c0e-beac-f3cca2eebbe3": "0",
+                "3fe661bd-211d-46ae-8712-e2f30587876e": "true",
+                "8fc809b6-e92e-40a3-b1e9-05edf1bdc92e": "false",
+                "2fb357ad-a2de-4aac-b344-19aa1f02adeb": "true",
+                "1828110e-45a2-4dc7-ac04-337d1f6cfe7f": "true"
+            };
 
             $.ajax({
                 type: 'POST',
                 url: '/assessment-result',
-                data: JSON.stringify(convertedMap),
+                data: JSON.stringify(obke),
                 contentType: "application/json; charset=utf-8",
-                dataType: "json"
+                success: function (view){
+                    $mainContainer.replaceWith(view)
+                }
             })
         })
     })
 
-    function displayAnswers(currentQ) {
-        let answers = currentQ.answers;
-
-        answers.forEach(answer => {
-
-            let div = $('<div>').addClass("form-check");
-            div.append($('<input>').addClass("form-check-input").attr({
-                type: 'radio',
-                id: answer.id,
-                name: 'radioAnswers',
-                value: answer.value
-            }));
-
-            div.append($('<label>').addClass("form-check-label").attr('for', answer.id).text(answer.answer));
-            $radioWrapper.append(div);
-        });
-    }
+    // function displayAnswers(currentQ) {
+    //     let answers = currentQ.answers;
+    //
+    //     answers.forEach(answer => {
+    //
+    //         let div = $('<div>').addClass("form-check");
+    //         div.append($('<input>').addClass("form-check-input").attr({
+    //             type: 'radio',
+    //             id: answer.id,
+    //             name: 'radioAnswers',
+    //             value: answer.value
+    //         }));
+    //
+    //         div.append($('<label>').addClass("form-check-label").attr('for', answer.id).text(answer.answer));
+    //         $radioWrapper.append(div);
+    //     });
+    // }
 
 </script>
 
