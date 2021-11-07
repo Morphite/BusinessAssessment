@@ -1,13 +1,24 @@
 <h3 class="my-4 text-center">Result</h3>
 
-<div class="d-flex justify-content-center">
-    <h3>Result for your assessment:</h3>
-    <div class="d-flex flex-row justify-content-start m-2" th:each="resultEntry : ${results}">
-        <div class="flex-column">
-            <p>[[${resultEntry.key}]]</p>
-            <p>[[${resultEntry.value}]]</p>
+<h3 class="text-center">Result for your assessment:</h3>
+<div class="d-flex flex-column align-items-center">
+    <div class="card text-center mt-1" style="width: 18rem;" th:each="resultEntry : ${results}">
+        <div class="card-body">
+            <h5 class="card-title">[[${resultEntry.key}]]</h5>
+            <p class="card-text">[[${resultEntry.value}]]</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
     </div>
+
+<!--    <div class="text-center m-2" th:each="resultEntry : ${results}">-->
+
+<!--&lt;!&ndash;        <div class="">&ndash;&gt;-->
+<!--&lt;!&ndash;            <p></p>&ndash;&gt;-->
+<!--&lt;!&ndash;            <p></p>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--    </div>-->
 </div>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
