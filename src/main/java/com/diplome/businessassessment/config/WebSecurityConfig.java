@@ -15,6 +15,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityUserDetailsService userDetailsService;
 
+    @Autowired
+    private SuccessAuthenticationHandler successAuthenticationHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -28,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").failureUrl("/login?error=true")
                 .usernameParameter("login")
                 .passwordParameter("pass")
-                .permitAll()
+                .permitAll().successHandler(successAuthenticationHandler)
                 .and()
                 .logout()
                 .permitAll();

@@ -1,10 +1,14 @@
 package com.diplome.businessassessment.service;
 
 import com.diplome.businessassessment.helper.AssessmentHelper;
+import com.diplome.businessassessment.model.Assessment;
+import com.diplome.businessassessment.model.SecurityUserDetails;
 import com.diplome.businessassessment.model.System;
+import com.diplome.businessassessment.repository.AssessmentRepository;
 import com.diplome.businessassessment.repository.QuestionRepository;
 import com.diplome.businessassessment.repository.SystemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,10 +28,12 @@ public class AssessmentService {
     @Autowired
     private SystemRepository systemRepository;
 
+    @Autowired
+    private AssessmentRepository assessmentRepository;
+
     public Map<String, Double> makeAssessment(Map<String, String> answerMap) {
         int marketSegmentId = Integer.parseInt(answerMap.get("market"));
         answerMap.remove("market");
-
 
         Map<String, String> yesNoQuestionMap = new HashMap<>();
         Map<String, Boolean> yesNoQuestionBooleanMap;
@@ -47,8 +53,17 @@ public class AssessmentService {
 
         Map<String, System> systems = systemRepository.findAllSystemMapWithIdAsKey();
         Map<String, Double> systemIdScoreMap = assessmentHelper.assess(marketSegmentId, modifiedAnswersMap, yesNoQuestionBooleanMap);
-        Map<String, Double> systemIdScoreMapWithKeyAsSystemName = new HashMap<>();
-        systemIdScoreMap.forEach((k, v) -> systemIdScoreMapWithKeyAsSystemName.put(systems.get(k).getName(), v));
-        return systemIdScoreMapWithKeyAsSystemName;
+
+        String userId = ((SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId();
+        assessmentRepository.save(new Assessment(userId, systemIdScoreMap));
+
+        return convertSystemIdScoreMapToSystemNameScoreMap(systemIdScoreMap, systems);
     }
+
+    public Map<String, Double> convertSystemIdScoreMapToSystemNameScoreMap
+            (Map<String, Double> systemIdScoreMapWithKeyAsSystemId, Map<String, System> systems){
+        return systemIdScoreMapWithKeyAsSystemId.entrySet().stream()
+                .collect(Collectors.toMap(entry -> systems.get(entry.getKey()).getName(), Map.Entry::getValue));
+    }
+
 }

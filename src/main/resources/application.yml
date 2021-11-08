@@ -6,3 +6,5 @@ spring:
       database: business_assessment
   thymeleaf:
     cache: false
+    mode: HTML
+    templates-root: src/main/resources/templates/

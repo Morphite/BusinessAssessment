@@ -26,7 +26,7 @@ public class QuestionService {
 
     public List<QuestionModelForView> getQuestions() {
         List<Metric> metricsQuestions = metricRepository.findAll();
-        List<QuestionModel> rawYesNoQuestions = questionRepository.findAll();
+        List<FunctionalityModel> rawYesNoQuestions = questionRepository.findAll();
 
         List<Answer> answersForMetric = answerRepository.findAll();
         answersForMetric.sort(Comparator.comparing(Answer::getValue).reversed());
