@@ -15,4 +15,8 @@ public interface MetricRepository extends MongoRepository<Metric, String> {
     default Map<String, Metric> findAllMetricsMapWithNameAsKey() {
         return findAll().stream().collect(Collectors.toMap(Metric::getName, abstractMetric -> abstractMetric));
     }
+
+    default Map<String, Metric> findAllMetricsMapWithIdAsKey() {
+        return findAll().stream().collect(Collectors.toMap(Metric::getId, abstractMetric -> abstractMetric));
+    }
 }

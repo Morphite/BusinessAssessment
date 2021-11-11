@@ -6,45 +6,41 @@
 
 <div th:replace="fragments/header :: header"></div>
 
-<h3 class="mt-3 mb-3 font-weight-normal text-center">Researches</h3>
+<h3 class="mt-3 mb-3 font-weight-normal text-center">Systems</h3>
+
+<div th:replace="fragments/sidebar :: sidebar"></div>
 
 <table class="list-table table table-hover text-center">
     <thead class="thead-dark">
     <tr>
-        <th>ID</th>
-        <th>ObjectID</th>
+        <th>Id</th>
         <th>Name</th>
-        <th>Date</th>
-        <th>pH</th>
-        <th>Hum</th>
-        <th>Trophy</th>
-        <th>Oxygen</th>
-        <th>
-            <a href="/researches/create">
+        <th>Link</th>
+        <th>System metrics</th>
+        <th>Functionality</th>
+        <th class="">
+            <a href="/systems/create">
                 <button class="btn btn-outline-success">Create</button>
             </a>
         </th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="research : ${researches}" class="align-middle">
-        <td>[[${research.id}]]</td>
-        <td>[[${research.objectId}]]</td>
-        <td>[[${research.name}]]</td>
-        <td>[[${research.dateTime}]]</td>
-        <td>[[${research.ph}]]</td>
-        <td>[[${research.hum}]]</td>
-        <td>[[${research.trophy}]]</td>
-        <td>[[${research.oxygen}]]</td>
+    <tr th:each="system : ${systems}">
+        <td>[[${system.id}]]</td>
+        <td>[[${system.name}]]</td>
+        <td>[[${system.link}]]</td>
+        <td>[[${system.systemMetrics}]]</td>
+        <td>[[${system.functionality}]]</td>
         <td>
-            <a th:href="@{/researches/__${research.id}__}">
+            <a th:href="@{/systems/__${system.id}__/edit}">
                 <button class="btn btn-outline-success mb-1">Edit</button>
             </a>
-            <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-outline-danger">
+            <button type="button" data-toggle="modal" data-target="#systemDeleteModal-" class="btn btn-outline-danger">
                 Delete
             </button>
 
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+            <div class="modal fade" th:id="'systemDeleteModal-' + ${system.id}" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -60,7 +56,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a th:href="@{/researches/__${research.id}__}">
+                            <a th:href="@{/systems/__${system.id}__/delete}">
                                 <button type="button" class="btn btn-danger">Delete</button>
                             </a>
                         </div>
@@ -72,11 +68,11 @@
     </tbody>
 </table>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="../../static/js/jquery.min.js"></script>
-<script src="../../static/js/popper.min.js"></script>
-<script src="../../static/js/bootstrap.js"></script>
-
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+
+<script>
+    feather.replace()
+</script>
 </html>

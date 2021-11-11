@@ -15,6 +15,7 @@ public class System {
 
     private String id;
     private String name;
+    private String link;
     private Map<String, Integer> systemMetrics;
     private Map<String, Boolean> functionality;
 

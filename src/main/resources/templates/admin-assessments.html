@@ -14,30 +14,18 @@
     <thead class="thead-dark">
     <tr>
         <th>ID</th>
-        <th>ObjectID</th>
-        <th>Name</th>
+        <th>UserID</th>
         <th>Date</th>
-        <th>pH</th>
-        <th>Hum</th>
-        <th>Trophy</th>
-        <th>Oxygen</th>
-        <th>Result</th>
-        <th>Notes</th>
+        <th>Results</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="assessment : ${assessments}" class="align-middle">
         <td>[[${assessment.id}]]</td>
-        <td>[[${assessment.objectId} ?: 'Quick assessment']]</td>
-        <td>[[${assessment.name}]]</td>
-        <td>[[${assessment.dateTime}]]</td>
-        <td>[[${assessment.ph}]]</td>
-        <td>[[${assessment.hum}]]</td>
-        <td>[[${assessment.trophy}]]</td>
-        <td>[[${assessment.oxygen}]]</td>
+        <td>[[${assessment.userId}]]</td>
+        <td>[[${assessment.date}]]</td>
         <td>[[${assessment.assessmentResult}]]</td>
-        <td>[[${assessment.notes}]]</td>
         <td>
             <a th:href="@{/assessment/details/__${assessment.id}__}">
                 <button class="btn btn-outline-success mb-1 text-nowrap">Show more</button>
@@ -63,7 +51,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                Delete this assessment name:"[[${assessment.name}]]"?
+                                Delete this assessment name:"[[${assessment.id}]]"?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel

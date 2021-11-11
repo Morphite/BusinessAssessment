@@ -4,9 +4,9 @@
 <div class="d-flex flex-column align-items-center">
     <div class="card text-center mt-1" style="width: 18rem;" th:each="resultEntry : ${results}">
         <div class="card-body">
-            <h5 class="card-title">[[${resultEntry.key}]]</h5>
+            <h5 class="card-title">[[${resultEntry.key.name}]]</h5>
             <p class="card-text">[[${resultEntry.value}]]</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a th:href="@{__${resultEntry.key.link}__}" target="_blank" class="btn btn-primary">Go to system site</a>
         </div>
     </div>
 </div>

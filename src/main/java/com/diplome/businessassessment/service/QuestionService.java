@@ -3,7 +3,7 @@ package com.diplome.businessassessment.service;
 import com.diplome.businessassessment.model.*;
 import com.diplome.businessassessment.repository.AnswerRepository;
 import com.diplome.businessassessment.repository.MetricRepository;
-import com.diplome.businessassessment.repository.QuestionRepository;
+import com.diplome.businessassessment.repository.FunctionalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,14 @@ public class QuestionService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private QuestionRepository questionRepository;
+    private FunctionalityRepository functionalityRepository;
 
     @Autowired
     private MetricRepository metricRepository;
 
     public List<QuestionModelForView> getQuestions() {
         List<Metric> metricsQuestions = metricRepository.findAll();
-        List<FunctionalityModel> rawYesNoQuestions = questionRepository.findAll();
+        List<FunctionalityModel> rawYesNoQuestions = functionalityRepository.findAll();
 
         List<Answer> answersForMetric = answerRepository.findAll();
         answersForMetric.sort(Comparator.comparing(Answer::getValue).reversed());

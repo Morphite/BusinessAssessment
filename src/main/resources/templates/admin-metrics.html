@@ -6,7 +6,7 @@
 
 <div th:replace="fragments/header :: header"></div>
 
-<h3 class="mt-3 mb-3 font-weight-normal text-center">Users</h3>
+<h3 class="mt-3 mb-3 font-weight-normal text-center">Metrics</h3>
 
 <div th:replace="fragments/sidebar :: sidebar"></div>
 
@@ -14,35 +14,29 @@
     <thead class="thead-dark">
     <tr>
         <th>Id</th>
-        <th>Login</th>
-        <th>Pass</th>
         <th>Name</th>
-        <th>Surname</th>
-        <th>Role</th>
+        <th>Metric values</th>
         <th class="">
-            <a href="/users/create">
+            <a href="/metrics/create">
                 <button class="btn btn-outline-success">Create</button>
             </a>
         </th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
-        <td>[[${user.id}]]</td>
-        <td>[[${user.login}]]</td>
-        <td>[[${user.pass}]]</td>
-        <td>[[${user.name}]]</td>
-        <td>[[${user.surname}]]</td>
-        <td>[[${user.role}]]</td>
+    <tr th:each="metric : ${metrics}">
+        <td>[[${metric.id}]]</td>
+        <td>[[${metric.name}]]</td>
+        <td>[[${metric.metricValues}]]</td>
         <td>
-            <a th:href="@{/users/edit/__${user.id}__}">
+            <a th:href="@{/metrics/__${metric.id}__/edit}">
                 <button class="btn btn-outline-success mb-1">Edit</button>
             </a>
-            <button type="button" data-toggle="modal" data-target="#usersDeleteModal-" class="btn btn-outline-danger">
+            <button type="button" data-toggle="modal" data-target="#metricDeleteModal-" class="btn btn-outline-danger">
                 Delete
             </button>
 
-            <div class="modal fade" th:id="'usersDeleteModal-' + ${user.id}" tabindex="-1" role="dialog"
+            <div class="modal fade" th:id="'metricDeleteModal-' + ${metric.id}" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -58,7 +52,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a th:href="@{/users/delete/__${user.id}__}">
+                            <a th:href="@{/metrics/__${metric.id}__/delete}">
                                 <button type="button" class="btn btn-danger">Delete</button>
                             </a>
                         </div>
