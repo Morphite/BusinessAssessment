@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @Document(collection = "metric")
 public class Metric {
 
@@ -16,6 +15,10 @@ public class Metric {
     private String name;
 
     private List<Double> metricValues;
+
+    public Metric() {
+        this.id = UUID.randomUUID().toString();
+    }
 
     public Metric(String name, List<Double> metricValues) {
         this.id = UUID.randomUUID().toString();
