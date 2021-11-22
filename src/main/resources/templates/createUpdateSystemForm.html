@@ -1,0 +1,95 @@
+<html xmlns:th="https://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head"></div>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <h3 class="my-4 text-center">Add new system</h3>
+
+    <form th:action="@{/admin/systems/create-or-update}" method="post" accept-charset="UTF-8">
+
+        <input th:if="${system}" type="hidden" name="id" th:value="${system.id}">
+
+        <div class="form-row justify-content-center">
+            <div class="form-group col-md-6">
+                <label for="inputObjName">System name</label>
+                <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" name="name" class="form-control" id="inputObjName"
+                       placeholder="Name" th:value="${system?.name}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputObjLink">Link</label>
+                <input type="text" name="link" class="form-control" id="inputObjLink"
+                       placeholder="Link" th:value="${system?.link}" required>
+            </div>
+        </div>
+
+        <h1 class="text-center">systemMetrics</h1>
+
+        <div class="form-group form-row justify-content-center mb-0"
+             th:if="${system.systemMetrics}"
+             th:each="metricEntry : ${system?.systemMetrics}">
+            <div class="form-group col-md-6">
+                <label th:attr="for='metricField-' + ${metricEntry.key}">[[${metricMap.get(metricEntry.key).name}]]</label>
+                <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" th:name="'systemMetrics[' + ${metricEntry.key} + ']'" th:id="'metricField-' + ${metricEntry.key}"
+                       th:value="${metricEntry.value}" class="form-control" placeholder="Value" required>
+            </div>
+        </div>
+
+        <div class="form-group form-row justify-content-center mb-0"
+             th:if="${systemMetrics}"
+             th:each="metricEntry : ${systemMetrics}">
+            <div class="form-group col-md-6">
+                <label th:attr="for='metricField-' + ${metricEntry.key}">[[${metricMap.get(metricEntry.key).name}]]</label>
+                <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" th:name="'systemMetrics[' + ${metricEntry.key} + ']'" th:id="'metricField-' + ${metricEntry.key}"
+                       value="0" class="form-control" placeholder="Value" required>
+            </div>
+        </div>
+
+        <h1 class="text-center">functionality</h1>
+        <div class="form-group form-row justify-content-center mb-0"
+             th:if="${system.functionality}"
+             th:each="functionalityEntry : ${system?.functionality}">
+            <div class="form-group col-md-6">
+                <label th:attr="for='functionalityField-' + ${functionalityEntry.key}">[[${functionalityMap.get(functionalityEntry.key).question}]]</label>
+                <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" th:name="'functionality[' + ${functionalityEntry.key} + ']'"
+                       th:id="'functionality-' + ${functionalityEntry.key}"
+                       th:value="${functionalityEntry.value}" class="form-control" placeholder="Value" required>
+            </div>
+        </div>
+
+        <div class="form-group form-row justify-content-center mb-0"
+             th:if="${functionality}"
+             th:each="functionalityEntry : ${functionality}">
+            <div class="form-group col-md-6">
+                <label th:attr="for='functionalityField-' + ${functionalityEntry.key}">[[${functionalityMap.get(functionalityEntry.key).question}]]</label>
+                <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" th:name="'functionality[' + ${functionalityEntry.key} + ']'"
+                       th:id="'functionality-' + ${functionalityEntry.key}"
+                       value="0" class="form-control" placeholder="Value" required>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="finalCheck" required>
+                <label class="form-check-label" for="finalCheck">
+                    Confirm
+                </label>
+            </div>
+        </div>
+        <div class="control-buttons text-center">
+            <button type="submit" class="btn btn-success form-button">Create</button>
+            <button type="button" class="btn btn-outline-dark form-button" onclick="history.back()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/popper.min.js"></script>
+<script src="../static/js/bootstrap.js"></script>
+
+</body>
+</html>

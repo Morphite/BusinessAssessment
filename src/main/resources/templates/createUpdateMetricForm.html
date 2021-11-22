@@ -11,32 +11,36 @@
 
     <form th:action="@{/admin/metrics/create-or-update}" method="post" accept-charset="UTF-8">
 
-        <input type="hidden" name="metricId" th:value="${metricId}">
+        <input th:if="${metric}" type="hidden" name="id" th:value="${metric.id}">
 
         <div class="form-row justify-content-center">
             <div class="form-group col-md-6">
                 <label for="inputObjName">Metric name</label>
                 <input type="text" pattern="([A-ZА-Яa-zа-я0-9_- ]){3,45}" name="name" class="form-control" id="inputObjName"
-                       placeholder="Name" required>
+                       placeholder="Name" th:value="${metric?.name}" required>
             </div>
         </div>
 
         <div class="form-group form-row justify-content-center mb-0">
             <div class="col-sm-2">
                 <label for="inputMicro">Micro business</label>
-                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputMicro" placeholder="Micro business" required>
+                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputMicro" placeholder="Micro business"
+                       th:value="${ metric != null ? metric.metricValues[0] : '' }" required>
             </div>
             <div class="col-sm-2">
                 <label for="inputSmall">Small business</label>
-                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputSmall" placeholder="Small business" required>
+                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputSmall" placeholder="Small business"
+                       th:value="${ metric != null ? metric.metricValues[1] : '' }" required>
             </div>
             <div class="form-group col-sm-2">
                 <label for="inputMedium">Medium business</label>
-                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputMedium" placeholder="Medium business" required>
+                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputMedium" placeholder="Medium business"
+                       th:value="${ metric != null ? metric.metricValues[2] : '' }" required>
             </div>
             <div class="form-group col-sm-2">
                 <label for="inputLarge">Large business</label>
-                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputLarge" placeholder="Large business" required>
+                <input type="number" min="0" max="10" step="0.01" name="metricValues[]" class="form-control" id="inputLarge" placeholder="Large business"
+                       th:value="${ metric != null ? metric.metricValues[3] : '' }" required>
             </div>
         </div>
 

@@ -2,6 +2,7 @@ package com.diplome.businessassessment.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -13,7 +14,9 @@ import java.util.UUID;
 @Document(collection = "system")
 public class System {
 
+    @Id
     private String id;
+
     private String name;
     private String link;
     private Map<String, Integer> systemMetrics;
@@ -21,6 +24,5 @@ public class System {
 
     public System() {
         this.id = UUID.randomUUID().toString();
-        this.systemMetrics = new HashMap<>();
     }
 }

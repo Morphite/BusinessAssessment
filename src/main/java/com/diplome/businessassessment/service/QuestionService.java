@@ -43,7 +43,7 @@ public class QuestionService {
 
         questionsWithAnswers.addAll(metricsQuestions.stream()
                 .map(metric -> new QuestionModelForView(metric.getId(),
-                        "How important metric '" + metric.getName() + "' for you?", answersForMetric))
+                        "How important is metric '" + metric.getName() + "' for you?", answersForMetric))
                 .collect(Collectors.toList()));
 
         List<BooleanAnswer> booleanAnswers = List.of(new BooleanAnswer("Yes", true),

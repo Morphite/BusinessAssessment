@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,8 @@ public class SystemService {
 
     @Autowired
     private FunctionalityRepository functionalityRepository;
+
+
 
     public List<System> getSystemWithNamedMetricsAndFunctionality() {
         Map<String, Metric> metrics = metricRepository.findAllMetricsMapWithIdAsKey();
@@ -44,5 +47,13 @@ public class SystemService {
         });
 
         return systems;
+    }
+
+    public Optional<System> findById(String systemId){
+        return systemRepository.findById(systemId);
+    }
+
+    public void createOrUpdateSystem(System system) {
+        systemRepository.save(system);
     }
 }

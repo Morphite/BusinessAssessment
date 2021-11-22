@@ -17,7 +17,7 @@
         <th>System metrics</th>
         <th>Functionality</th>
         <th class="">
-            <a href="/systems/create">
+            <a href="/admin/systems/create-or-update-form">
                 <button class="btn btn-outline-success">Create</button>
             </a>
         </th>
@@ -31,7 +31,7 @@
         <td>[[${system.systemMetrics}]]</td>
         <td>[[${system.functionality}]]</td>
         <td>
-            <a th:href="@{/systems/__${system.id}__/edit}">
+            <a th:href="@{/admin/systems/create-or-update-form/__${system.id}__}">
                 <button class="btn btn-outline-success mb-1">Edit</button>
             </a>
             <button type="button" data-toggle="modal" data-target="#systemDeleteModal-" class="btn btn-outline-danger">
