@@ -11,6 +11,9 @@ public class Answer extends AbstractAnswer {
 
     private double value;
 
+    public Answer() {
+    }
+
     public Answer(String answer, double value) {
         super(answer);
         this.value = value;

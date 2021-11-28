@@ -36,10 +36,10 @@ public class AssessmentHelper {
         Map<String, Double> metricValueMultipliedByAnswerMap = new HashMap<>();
         for (Metric metric : metrics) {
             double valueFromQuiz = metricAnswersValues.get(metric.getId());
-            double temp = metric.getMetricValues().get(marketSegmentId - 1) * valueFromQuiz;
+            double currentMultipliedMetricValue = metric.getMetricValues().get(marketSegmentId - 1) * valueFromQuiz;
 
-            metricValueMultipliedByAnswerMap.put(metric.getId(), temp);
-            sum += temp;
+            metricValueMultipliedByAnswerMap.put(metric.getId(), currentMultipliedMetricValue);
+            sum += currentMultipliedMetricValue;
         }
 
         if (sum != 1.0) {
@@ -48,6 +48,16 @@ public class AssessmentHelper {
         }
 
         List<System> filteredSystems = systems.stream().filter(system -> {
+            for (Map.Entry<String, Double> answerEntry : metricAnswersValues.entrySet()) {
+                if ((answerEntry.getValue() == 1.5 || answerEntry.getValue() == 1.2)
+                        && system.getSystemMetrics().get(answerEntry.getKey()) == 0) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+
+        filteredSystems = filteredSystems.stream().filter(system -> {
             for (Map.Entry<String, Boolean> functionalityEntry : system.getFunctionality().entrySet()) {
                 if (functionalityAnswers.get(functionalityEntry.getKey()) && !functionalityEntry.getValue()) {
                     return false;
@@ -55,6 +65,7 @@ public class AssessmentHelper {
             }
             return true;
         }).collect(Collectors.toList());
+
 
         Map<String, Double> systemScoreMap = new HashMap<>();
         for (System system : filteredSystems) {

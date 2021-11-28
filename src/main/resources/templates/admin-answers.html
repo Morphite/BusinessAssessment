@@ -15,7 +15,7 @@
         <th>Answer</th>
         <th>Value</th>
         <th class="">
-            <a href="/answers/create">
+            <a href="/admin/answers/create-or-update-form">
                 <button class="btn btn-outline-success">Create</button>
             </a>
         </th>
@@ -27,8 +27,8 @@
         <td>[[${answer.answer}]]</td>
         <td>[[${answer.value}]]</td>
         <td>
-            <a th:href="@{/answers/__${answer.id}__/edit}">
-                <button class="btn btn-outline-success mb-1">Edit</button>
+            <a th:href="@{/admin/answers/create-or-update-form/__${answer.id}__}">
+                <button class="btn btn-outline-success mb-1">Update</button>
             </a>
             <button type="button" data-toggle="modal" data-target="#answerDeleteModal-" class="btn btn-outline-danger">
                 Delete

@@ -64,7 +64,7 @@ public class AssessmentService {
                 (systemIdScoreMapWithKeyAsSystemId, systems);
 
         return systemResultMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(3)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }

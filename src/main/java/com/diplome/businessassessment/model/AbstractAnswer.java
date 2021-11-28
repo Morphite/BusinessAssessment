@@ -7,13 +7,16 @@ import org.springframework.data.annotation.Id;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 public abstract class AbstractAnswer {
 
     @Id
     private String id;
 
     private String answer;
+
+    public AbstractAnswer() {
+        this.id = UUID.randomUUID().toString();
+    }
 
     public AbstractAnswer(String answer) {
         this.id = UUID.randomUUID().toString();

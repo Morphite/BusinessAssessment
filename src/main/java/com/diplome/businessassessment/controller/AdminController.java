@@ -1,13 +1,11 @@
 package com.diplome.businessassessment.controller;
 
+import com.diplome.businessassessment.model.Answer;
 import com.diplome.businessassessment.model.FunctionalityModel;
 import com.diplome.businessassessment.model.Metric;
 import com.diplome.businessassessment.model.System;
 import com.diplome.businessassessment.repository.*;
-import com.diplome.businessassessment.service.AssessmentService;
-import com.diplome.businessassessment.service.FunctionalityService;
-import com.diplome.businessassessment.service.MetricService;
-import com.diplome.businessassessment.service.SystemService;
+import com.diplome.businessassessment.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +34,7 @@ public class AdminController {
     private AssessmentService assessmentService;
 
     @Autowired
-    private AnswerRepository answerRepository;
+    private AnswerService answerService;
 
     @Autowired
     private UserRepository userRepository;
@@ -149,7 +147,20 @@ public class AdminController {
 
     @GetMapping("/admin/answers")
     public String getAdminAnswersPage(Model model) {
-        model.addAttribute("answers", answerRepository.findAll());
+        model.addAttribute("answers", answerService.findAll());
         return "admin-answers";
+    }
+
+    @GetMapping({"/admin/answers/create-or-update-form/{answerId}", "/admin/answers/create-or-update-form"})
+    public String createUpdateAnswer(@PathVariable(required = false) Optional<String> answerId, Model model) {
+        answerId.ifPresent(s -> model.addAttribute("answer",
+                answerService.findById(s).orElse(null)));
+        return "createUpdateAnswerForm";
+    }
+
+    @PostMapping("/admin/answers/create-or-update")
+    public String postCreateUpdateAnswer(Answer answer) {
+        answerService.createOrUpdateAnswer(answer);
+        return "redirect:/admin/answers";
     }
 }
